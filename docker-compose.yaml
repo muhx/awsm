@@ -1,0 +1,10 @@
+version: '3'
+services:
+  awsm:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: prod
+    container_name: awsm
+    ports:
+      - 80:80

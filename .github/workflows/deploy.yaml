@@ -1,0 +1,37 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  deploy:
+    name: Deploy to server
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Lowercase repository name
+        run: echo "REPOSITORY_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
+      - name: Pull and deploy to server
+        uses: appleboy/ssh-action@master
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_USER: ${{ github.repository_owner }}
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          envs: GH_TOKEN,GH_USER
+          script: |
+              git clone --no-checkout https://$GH_TOKEN:x-oauth-basic@github.com/$GH_USER/awsm.git /home/docker/awsm.tmp
+              cp -a /home/docker/awsm.tmp/.git /home/docker/awsm/
+              rm -rf /home/docker/awsm.tmp
+              cd /home/docker/awsm
+              git reset --hard HEAD
+              docker login -u $GH_USER -p $GH_TOKEN ghcr.io
+              docker-compose up -d --build --force-recreate
