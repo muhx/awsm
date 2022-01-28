@@ -6,7 +6,7 @@ repo_name: "muhx/awsm"
 repo_url: https://github.com/muhx/awsm
 site_url: https://awsm.id/
 site_description: >-
-  Semua hal AWSM dalam satu tempat
+  Everything AWSM in one place, inspired by awesome project at GitHub
 site_author: muhx
 copyright: Copyright &copy; 2022 <a href="https://awsm.id">AWSM.ID</a>
 dev_addr: !ENV [DEV_ADDR, '0.0.0.0:8080']
@@ -17,7 +17,7 @@ dev_addr: !ENV [DEV_ADDR, '0.0.0.0:8080']
 theme:
   name: material
   custom_dir: material
-  language: id
+  language: en
   icon:
     logo: logo
     admonition:
@@ -51,14 +51,14 @@ theme:
     - announce.dismiss
   palette: # https://www.materialpalette.com/colors
     - scheme: default
-      primary: black
-      accent: black
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/toggle-switch
         name: Switch to dark mode
     - scheme: slate
-      primary: white
-      accent: white
+      primary: yellow
+      accent: yellow
       toggle:
         icon: material/toggle-switch-off-outline
         name: Switch to light mode
@@ -73,10 +73,10 @@ extra:
       link: 'https://github.com/muhx/awsm'
   alternate:
     - name: Bahasa
-      link: /
+      link: /id
       lang: id
     - name: English
-      link: /en
+      link: /
       lang: en
   analytics:
     provider: google
@@ -156,9 +156,11 @@ markdown_extensions:
 nav:
   - Home:
     - "index.md"
-    - "tentang-awsm.md"
+    - "about.md"
   - Platform:
     - Node.js:
       - "platform/nodejs/nodejs-overview.md"
-      - "platform/nodejs/nodejs-packages.md"
+      - Packages:
+        - Mad Science:
+          - "platform/nodejs/packages/mad-science/webtorrent.md"
   - "tags.md"

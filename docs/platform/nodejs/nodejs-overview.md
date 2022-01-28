@@ -1,15 +1,11 @@
 ---
-title: Node.js dan Segala Cerita Tentangnya
+title: About Node.js
 tags:
     - nodejs
     - platform
 ---
 
-Node.js merupakan salah satu _open-source_ , _cross-platform_, JavaScript runtime untuk membuat aplikasi berbasis server _(server-based)_ maupun _command line_.
-
-## Jadi sebenarnya Node.js itu apa?
-
-Node.js di desain untuk dipakai dalam proses pembuatan aplikasi berbasis jaringan yang _scalable_. Contoh code berikut dapat menghandle koneksi secara simultan. Untuk setiap koneksi, _callback_ akan dijalankan, namun jika tidak ada task/pekerjaan yang harus dilakukan, Node.js akan masuk dalam mode sleep.
+As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications. In the following "hello world" example, many connections can be handled concurrently. Upon each connection, the callback is fired, but if there is no work to be done, Node.js will sleep.
 
 ``` js
 
@@ -30,20 +26,20 @@ server.listen(port, hostname, () => {
 
 ```
 
-Hal ini sangat kontras dengan model concurrency pada umumnya, yang berjalan di thread pada Sistem Operasi. Thread-based networking relatif kurang efisien dan sangat susah untuk digunakan. Selain itu, kalian sebagai pengguna Node.js gak perlu khawatir akan adanya proses _dead-locking,_ karena memang tidak ada lock di Node.js.
+This is in contrast to today's more common concurrency model, in which OS threads are employed. Thread-based networking is relatively inefficient and very difficult to use. Furthermore, users of Node.js are free from worries of dead-locking the process, since there are no locks. Almost no function in Node.js directly performs I/O, so the process never blocks except when the I/O is performed using synchronous methods of Node.js standard library. Because nothing blocks, scalable systems are very reasonable to develop in Node.js.
 
-Hampir tidak ada fungsi di Node.js yang secara langsung melakukan I/O, sehingga tidak akan ada proses _blocking[^1]_ kecuali ketika I/O dilakukan menggunakan metode _synchronous_ . Karena tidak ada proses _blocking_, system yang direncanakan memiliki skalabilitas sangat tepat di kembangkan menggunakan Node.js.
+If some of this language is unfamiliar, there is a full article on Blocking vs. Non-Blocking[^1].
 
-Node.js secara desain mirip, dan terinspirasi oleh system seperti _Event Machine_ pada Ruby dan Twisted pada Python. HTTP merupakan _first-class citizen_ pada Node.js, di design dengan _streaming_ dan latensi yang rendah. Hal ini membuat Node.js sangat cocok dipakai sebagai pondasi dari sebuah _library_ web atau web _framework sekalipun.
+Node.js is similar in design to, and influenced by, systems like Ruby's Event Machine and Python's Twisted. Node.js takes the event model a bit further. It presents an event loop as a runtime construct instead of as a library. In other systems, there is always a blocking call to start the event-loop. Typically, behavior is defined through callbacks at the beginning of a script, and at the end a server is started through a blocking call like EventMachine::run(). In Node.js, there is no such start-the-event-loop call. Node.js simply enters the event loop after executing the input script. Node.js exits the event loop when there are no more callbacks to perform. This behavior is like browser JavaScript — the event loop is hidden from the user.
 
-Jujur, translate ginian capek juga ya.
+HTTP is a first-class citizen in Node.js, designed with streaming and low latency in mind. This makes Node.js well suited for the foundation of a web library or framework.
 
-## Informasi Resmi
+Node.js being designed without threads doesn't mean you can't take advantage of multiple cores in your environment. Child processes can be spawned by using our child_process.fork() API, and are designed to be easy to communicate with. Built upon that same interface is the cluster module, which allows you to share sockets between processes to enable load balancing over your cores.
+
+## Official
 
 - [x] [Website](https://nodejs.org/)
 - [x] [Dokumentasi](https://nodejs.org/dist/latest/docs/api/)
 - [x] [Repositori](https://github.com/nodejs/node)
-
-
 
 [^1]: [Blocking vs Non-Blocking](https://nodejs.org/en/docs/guides/blocking-vs-non-blocking)
